@@ -9,9 +9,9 @@ NULLABLE = {'blank': True, 'null': True}
 class Ad(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор объявления', **NULLABLE)
 
-    title = models.CharField(max_length=200, verbose_name='Название товара', default='')
+    title = models.CharField(max_length=200, verbose_name='Название товара')
     image = models.ImageField(upload_to='ads/', verbose_name='Фото товара', **NULLABLE)
-    price = models.PositiveIntegerField(verbose_name='Цена товара', **NULLABLE)
+    price = models.PositiveIntegerField(verbose_name='Цена товара')
     description = models.TextField(verbose_name='Описание товара', **NULLABLE)
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата и время создания объявления')
 
@@ -29,7 +29,7 @@ class Comment(models.Model):
                            **NULLABLE)
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор отзыва', **NULLABLE)
 
-    text = models.TextField(verbose_name='Текст отзыва', default='')
+    text = models.TextField(verbose_name='Текст отзыва')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата и время создания отзыва')
 
     def __str__(self):
