@@ -10,6 +10,7 @@ services:
       POSTGRES_DB: "skymarket"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    restart: always
     ports:
       - "5435:5432"
     healthcheck:
@@ -26,9 +27,31 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       db:
         condition: service_healthy
+  frontend:
+    build: .
+    volumes:
+      - frontend:/app/build
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:1.19.3
+    ports:
+      - "8000:8000"
+      - "3000:3000"
+    volumes:
+      - ../skymarket/django_static/:/usr/share/nginx/html/django_static/
+      - ../skymarket/django_media/:/usr/share/nginx/html/django_media/
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - frontend:/usr/share/nginx/html/
+    restart: always
+    depends_on:
+      - db
+      - frontend
 volumes:
   pg_data:
+  frontend:
